@@ -23,7 +23,7 @@ provide(sidebarInjectionKey, { isExpanded: isSidebarExpanded, toggle: toggleSide
       >
         <slot name="sidebar" />
       </div>
-      <div class="grow overflow-hidden border-l border-neutral-700/70">
+      <div class="grow overflow-hidden md:border-l border-neutral-700/70">
         <slot name="default" />
       </div>
     </div>
