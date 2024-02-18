@@ -1,0 +1,30 @@
+@import "./base.css";
+
+html,
+body,
+#app {
+  height: 100%;
+  --thumb: #0002;
+  --track: #0000;
+  --thumb-hover: #0006;
+}
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 4px var(--track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--thumb);
+  border-radius: 0.625rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--thumb-hover);
+}
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumb) var(--track);
+  }
+}
