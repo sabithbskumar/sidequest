@@ -5,10 +5,10 @@ function getTextColor(type: string, value: number) {
     case "income":
       return "text-green-500";
     case "expense":
-      return "text-red-500";
+      return "text-red-400";
     case "balance": {
       if (value >= 0) return "text-green-500";
-      else return "text-red-500";
+      else return "text-red-400";
     }
   }
 }

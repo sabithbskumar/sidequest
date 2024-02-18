@@ -22,7 +22,7 @@ const transactionStyle = (type: string) => {
       return "text-green-500 before:content-['+']";
     }
     case "expense": {
-      return "text-red-500 before:content-['-']";
+      return "text-red-400 before:content-['-']";
     }
   }
 };
@@ -52,7 +52,7 @@ const transactionStyle = (type: string) => {
             <EditIcon class="size-14 p-3 shrink-0" />
           </button>
           <button
-            class="outline-none text-neutral-400 hover:text-red-500 focus-visible:ring-inset focus-visible:ring rounded"
+            class="outline-none text-neutral-400 hover:text-red-400 focus-visible:ring-inset focus-visible:ring rounded"
             type="button"
             @click="$emit('delete', transactionId)"
           >

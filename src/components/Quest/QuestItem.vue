@@ -48,7 +48,7 @@ defineEmits<{
             <EditIcon class="size-14 p-3 shrink-0" />
           </button>
           <button
-            class="outline-none text-neutral-400 hover:text-red-500 focus-visible:ring-inset focus-visible:ring rounded"
+            class="outline-none text-neutral-400 hover:text-red-400 focus-visible:ring-inset focus-visible:ring rounded"
             type="button"
             @click="$emit('delete', questId)"
           >
