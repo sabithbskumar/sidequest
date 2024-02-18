@@ -7,6 +7,7 @@ import { useQuestStore } from "@/stores/quest";
 import { storeToRefs } from "pinia";
 import { QuestForm } from "@/components/Forms";
 import type { QuestFormData } from "@/components/Forms";
+import TheHeader from "@/components/TheHeader.vue";
 
 const questStore = useQuestStore();
 const { questIds, questRecords } = storeToRefs(questStore);
@@ -79,11 +80,8 @@ const activeQuestId = ref("");
 
 <template>
   <div class="size-full flex flex-col relative bg-neutral-900">
-    <div class="flex justify-between align-middle bg-neutral-700/50 shadow-lg h-full max-h-16">
-      <div class="p-4 h-full px-3 text-xl font-semibold">
-        <span>Quest</span>
-      </div>
-    </div>
+    <TheHeader heading="Quest" />
+
     <div class="grow bg-neutral-800 overflow-y-auto pt-2 pb-20 pl-2 [scrollbar-gutter:stable]">
       <div class="w-full flex flex-col gap-2">
         <TransitionGroup name="list">

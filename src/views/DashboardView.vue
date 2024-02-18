@@ -4,6 +4,7 @@ import { useQuestStore } from "@/stores/quest";
 import { storeToRefs } from "pinia";
 import CurrencyIcon from "~icons/fluent-emoji-flat/coin";
 import CalendarIcon from "~icons/fluent-emoji-flat/calendar";
+import TheHeader from "@/components/TheHeader.vue";
 
 const currencyStore = useCurrencyStore();
 const { transactionIds, transactionRecords } = storeToRefs(currencyStore);
@@ -38,11 +39,8 @@ if (storedQuestData) {
 
 <template>
   <div class="size-full flex flex-col relative bg-neutral-900">
-    <div class="flex justify-between align-middle bg-neutral-700/50 shadow-lg h-full max-h-16">
-      <div class="p-4 h-full px-3 text-xl font-semibold">
-        <span>Dashboard</span>
-      </div>
-    </div>
+    <TheHeader heading="Dashboard" />
+
     <div class="grow bg-neutral-800 overflow-hidden overflow-y-auto p-2">
       <div class="h-full w-full max-w-5xl mx-auto flex flex-col gap-2">
         <RouterLink :to="{ name: 'quest' }" class="block rounded bg-neutral-700/30">
