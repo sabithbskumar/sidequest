@@ -61,7 +61,7 @@ const vFocus = {
           maxlength="8"
           step="any"
           inputmode="decimal"
-          pattern="^\d+(\.\d+)?$"
+          pattern="^\d+(\.\d{1,2})?$"
           title="Enter a valid number"
           required
         />
