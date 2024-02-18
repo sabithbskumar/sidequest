@@ -9,15 +9,16 @@ provide(sidebarInjectionKey, { isExpanded: isSidebarExpanded, toggle: toggleSide
 
 <template>
   <div class="bg-neutral-900 text-neutral-100 h-full w-full overflow-clip">
-    <div class="w-full h-full flex overflow-clip">
+    <div class="w-full h-full flex flex-col-reverse md:flex-row overflow-clip">
       <div
         :class="[
           'w-full',
           'shrink-0',
-          isSidebarExpanded ? 'max-w-full md:max-w-xs xl:max-w-sm' : 'max-w-16',
+          isSidebarExpanded ? 'max-w-full md:max-w-xs xl:max-w-sm' : 'md:max-w-16',
           'whitespace-nowrap',
           'transition-[max-width]',
           'duration-200',
+          'h-14 md:h-auto',
         ]"
       >
         <slot name="sidebar" />
