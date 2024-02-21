@@ -8,7 +8,7 @@ defineEmits<{
 <template>
   <div
     v-if="isVisble"
-    class="bg-neutral-900/50 absolute flex inset-0 backdrop-blur-sm shadow-md"
+    class="bg-neutral-900/50 absolute flex inset-0 backdrop-blur-sm shadow-md z-20"
     @click.self="$emit('close')"
   >
     <div class="grow max-w-2xl max-h-full mx-auto p-5">
