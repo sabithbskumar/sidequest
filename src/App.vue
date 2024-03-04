@@ -3,6 +3,7 @@ import MainLayout from "@/components/MainLayout.vue";
 import { SidebarPanel } from "@/components/Sidebar";
 import CurrencyIcon from "~icons/fluent-emoji-flat/coin";
 import CalendarIcon from "~icons/fluent-emoji-flat/calendar";
+import NoteIcon from "~icons/fluent-emoji-flat/notebook";
 
 const links = [
   {
@@ -14,6 +15,11 @@ const links = [
     label: "Currency",
     name: "currency",
     icon: CurrencyIcon,
+  },
+  {
+    label: "Notes",
+    name: "notes",
+    icon: NoteIcon,
   },
 ];
 </script>
