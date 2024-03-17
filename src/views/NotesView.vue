@@ -8,6 +8,7 @@ import { ref, watch } from "vue";
 import type { NoteFormData } from "@/components/Forms";
 import GlassModal from "@/components/GlassModal.vue";
 import NoteForm from "@/components/Forms/NoteForm.vue";
+import { useRouter } from "vue-router";
 
 const notesStore = useNotesStore();
 const { noteIds, noteRecords } = storeToRefs(notesStore);
@@ -48,9 +49,10 @@ function getFormOptions() {
   else return { heading: "Add Note", primaryLabel: "Add" };
 }
 
+const router = useRouter();
+
 const handleEdit = (id: string) => {
-  editedNoteId.value = id;
-  openModal();
+  router.push({ name: "note-details", params: { noteId: id } });
 };
 
 const handleSubmit = (formData: NoteFormData) => {

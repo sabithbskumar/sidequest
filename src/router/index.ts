@@ -1,5 +1,6 @@
 import CurrencyView from "@/views/CurrencyView.vue";
 import DashboardView from "@/views/DashboardView.vue";
+import NoteDetailsView from "@/views/NoteDetailsView.vue";
 import NotesView from "@/views/NotesView.vue";
 import QuestView from "@/views/QuestView.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -26,6 +27,11 @@ const router = createRouter({
       path: "/notes",
       name: "notes",
       component: NotesView,
+    },
+    {
+      path: "/notes/:noteId",
+      name: "note-details",
+      component: NoteDetailsView,
     },
   ],
 });

@@ -48,12 +48,6 @@ const vFocus = {
         name="heading"
         required
       />
-      <textarea
-        v-model.trim="formValues.note.content"
-        class="w-full h-full grow min-w-0 p-4 text-neutral-600 outline-none rounded resize-none"
-        placeholder="Note..."
-        name="content"
-      ></textarea>
     </div>
 
     <div class="flex gap-4">
