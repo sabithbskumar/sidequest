@@ -61,14 +61,14 @@ const handleSubmit = () => {
       </template>
       <button
         v-if="isEditing"
-        class="size-16 shrink-0 ml-auto flex items-center justify-center outline-none focus-visible:ring-2 ring-inset rounded focus-visible:text-green-500 hover:text-green-500"
+        class="size-16 shrink-0 flex items-center justify-center outline-none focus-visible:ring-2 ring-inset rounded focus-visible:text-green-500 hover:text-green-500"
         @click="handleSubmit"
       >
         <SaveIcon class="size-full p-5" />
       </button>
       <button
         v-else
-        class="size-16 shrink-0 ml-auto flex items-center justify-center outline-none focus-visible:ring-2 ring-inset rounded focus-visible:text-green-500 hover:text-green-500"
+        class="size-16 shrink-0 flex items-center justify-center outline-none focus-visible:ring-2 ring-inset rounded focus-visible:text-green-500 hover:text-green-500"
         @click="handleEdit"
       >
         <EditIcon class="size-full p-5" />
