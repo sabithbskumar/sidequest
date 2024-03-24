@@ -34,6 +34,7 @@ const useCurrencyStore = defineStore("currency", () => {
 
   function loadData(storedData: CurrencyStore) {
     transactionIds.value = storedData.transactionIds;
+    deletedTransactionIds.value = storedData.deletedTransactionIds;
     transactionRecords.value = storedData.transactionRecords;
   }
 
@@ -63,6 +64,7 @@ type TransactionDetails = Transaction & TransactionMetadata;
 
 interface CurrencyStore {
   transactionIds: string[];
+  deletedTransactionIds: string[];
   transactionRecords: Record<string, TransactionDetails>;
 }
 

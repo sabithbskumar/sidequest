@@ -38,6 +38,7 @@ const useQuestStore = defineStore("quest", () => {
 
   function loadData(storedData: QuestStore) {
     questIds.value = storedData.questIds;
+    deletedQuestIds.value = storedData.deletedQuestIds;
     questRecords.value = storedData.questRecords;
   }
 
@@ -67,6 +68,7 @@ type QuestDetails = Quest & QuestMetadata;
 
 interface QuestStore {
   questIds: string[];
+  deletedQuestIds: string[];
   questRecords: Record<string, QuestDetails>;
 }
 

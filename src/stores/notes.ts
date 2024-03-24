@@ -34,6 +34,7 @@ const useNotesStore = defineStore("notes", () => {
 
   function loadData(storedData: NoteStore) {
     noteIds.value = storedData.noteIds;
+    deletedNoteIds.value = storedData.deletedNoteIds;
     noteRecords.value = storedData.noteRecords;
   }
 
@@ -62,6 +63,7 @@ type NoteDetails = Note & NoteMetadata;
 
 interface NoteStore {
   noteIds: string[];
+  deletedNoteIds: string[];
   noteRecords: Record<string, NoteDetails>;
 }
 
