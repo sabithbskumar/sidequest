@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import type { TransactionFormData } from ".";
+import { useCurrencyStore } from "@/stores/currency";
+import { storeToRefs } from "pinia";
 
 const props = defineProps<{
   formOptions: {
@@ -29,6 +31,25 @@ function handleCancel() {
 const vFocus = {
   mounted: (el: HTMLElement) => el.focus(),
 };
+
+const currencyStore = useCurrencyStore();
+const { categoryIds, categoryRecords } = storeToRefs(currencyStore);
+const { loadData } = currencyStore;
+
+const storedData = localStorage.getItem("currencyStore");
+if (storedData) {
+  loadData(JSON.parse(storedData));
+}
+watch(currencyStore, () => {
+  const stringifiedStore = JSON.stringify(currencyStore.$state);
+  localStorage.setItem("currencyStore", stringifiedStore);
+});
+
+const filteredCategoryIds = computed(() =>
+  categoryIds.value.filter(
+    (id) => categoryRecords.value[id].type === formValues.value.transaction.type,
+  ),
+);
 </script>
 
 <template>
@@ -72,6 +93,20 @@ const vFocus = {
           placeholder="Note"
           name="note"
         />
+        <select
+          v-model="formValues.transaction.categoryId"
+          name="categoryId"
+          class="w-full min-w-0 p-4 text-neutral-600 outline-none rounded"
+          required
+        >
+          <option value="" disabled>Category</option>
+          <option
+            v-for="categoryId in filteredCategoryIds"
+            :key="categoryId"
+            :value="categoryId"
+            v-text="categoryRecords[categoryId].name"
+          ></option>
+        </select>
       </div>
     </div>
     <div class="flex gap-4">

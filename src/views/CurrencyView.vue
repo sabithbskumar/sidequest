@@ -13,7 +13,7 @@ import TagIcon from "~icons/fluent-emoji-flat/label";
 import { RouterLink } from "vue-router";
 
 const currencyStore = useCurrencyStore();
-const { transactionIds, transactionRecords } = storeToRefs(currencyStore);
+const { transactionIds, transactionRecords, categoryRecords } = storeToRefs(currencyStore);
 const { addTransaction, updateTransaction, deleteTransaction, loadData } = currencyStore;
 
 const storedData = localStorage.getItem("currencyStore");
@@ -44,7 +44,7 @@ function getFormData(): { id: string; transaction: Transaction } {
         ...transactionRecords.value[editedTransactionId.value],
       },
     };
-  else return { id: "", transaction: { amount: "", type: "expense", note: "" } };
+  else return { id: "", transaction: { amount: "", type: "expense", note: "", categoryId: "" } };
 }
 function getFormOptions() {
   if (editedTransactionId.value) return { heading: "Edit Transaction", primaryLabel: "Edit" };
@@ -119,6 +119,7 @@ function tallyFinances() {
             :amount="transactionRecords[transactionId].amount"
             :type="transactionRecords[transactionId].type"
             :note="transactionRecords[transactionId].note"
+            :category="categoryRecords[transactionRecords[transactionId].categoryId].name"
             :active-transaction-id="activeTransactionId"
             :show-actions="activeTransactionId === transactionId"
             @edit="handleEdit"

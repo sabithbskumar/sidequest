@@ -78,6 +78,7 @@ interface Transaction {
   amount: string;
   type: TransactionType;
   note: string;
+  categoryId: string;
 }
 
 interface TransactionMetadata {

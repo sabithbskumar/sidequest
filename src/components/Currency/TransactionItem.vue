@@ -7,6 +7,7 @@ defineProps<{
   amount: string;
   type: string;
   note: string;
+  category: string;
   showActions: boolean;
 }>();
 
@@ -40,6 +41,9 @@ const transactionStyle = (type: string) => {
       >
         {{ amount }}
       </span>
+      <span class="px-3 truncate pointer-events-none text-neutral-200 font-medium">{{
+        category
+      }}</span>
       <span class="px-3 truncate pointer-events-none text-neutral-200 font-medium">{{ note }}</span>
 
       <Transition name="action-buttons">
