@@ -36,13 +36,18 @@ const router = createRouter({
     },
     {
       path: "/notes",
-      name: "notes",
-      component: NotesView,
-    },
-    {
-      path: "/notes/:noteId",
-      name: "note-details",
-      component: NoteDetailsView,
+      children: [
+        {
+          path: "",
+          name: "notes",
+          component: NotesView,
+        },
+        {
+          path: ":noteId",
+          name: "note-details",
+          component: NoteDetailsView,
+        },
+      ],
     },
   ],
 });
