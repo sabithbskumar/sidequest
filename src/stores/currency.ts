@@ -5,6 +5,8 @@ const useCurrencyStore = defineStore("currency", () => {
   const transactionIds = ref<string[]>([]);
   const deletedTransactionIds = ref<string[]>([]);
   const transactionRecords = ref<Record<string, TransactionDetails>>({});
+  const categoryIds = ref<string[]>([]);
+  const categoryRecords = ref<Record<string, TransactionCategory>>({});
 
   function addTransaction({ id, transaction }: { id: string; transaction: Transaction }) {
     const dateCreated = Date.now().toString();
@@ -36,6 +38,22 @@ const useCurrencyStore = defineStore("currency", () => {
     transactionIds.value = storedData.transactionIds;
     deletedTransactionIds.value = storedData.deletedTransactionIds;
     transactionRecords.value = storedData.transactionRecords;
+
+    categoryIds.value = storedData.categoryIds;
+    categoryRecords.value = storedData.categoryRecords;
+  }
+
+  function addCategory({ id, category }: { id: string; category: TransactionCategory }) {
+    categoryIds.value.unshift(id);
+    categoryRecords.value[id] = category;
+  }
+
+  function updateCategory({ id, category }: { id: string; category: TransactionCategory }) {
+    categoryRecords.value[id] = category;
+  }
+
+  function deleteCategory({ id }: { id: string }) {
+    categoryIds.value = categoryIds.value.filter((category) => category !== id);
   }
 
   return {
@@ -46,12 +64,19 @@ const useCurrencyStore = defineStore("currency", () => {
     updateTransaction,
     deleteTransaction,
     loadData,
+    categoryIds,
+    categoryRecords,
+    addCategory,
+    updateCategory,
+    deleteCategory,
   };
 });
 
+type TransactionType = "income" | "expense";
+
 interface Transaction {
   amount: string;
-  type: string;
+  type: TransactionType;
   note: string;
 }
 
@@ -66,7 +91,14 @@ interface CurrencyStore {
   transactionIds: string[];
   deletedTransactionIds: string[];
   transactionRecords: Record<string, TransactionDetails>;
+  categoryIds: string[];
+  categoryRecords: Record<string, TransactionCategory>;
+}
+
+interface TransactionCategory {
+  name: string;
+  type: TransactionType;
 }
 
 export { useCurrencyStore };
-export type { Transaction, TransactionMetadata, TransactionDetails };
+export type { Transaction, TransactionMetadata, TransactionDetails, TransactionCategory };

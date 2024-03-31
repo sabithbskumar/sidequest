@@ -1,12 +1,18 @@
-import type { Transaction } from "@/stores/currency";
+import type { Transaction, TransactionCategory } from "@/stores/currency";
 import type { Quest } from "@/stores/quest";
 import TransactionForm from "./TransactionForm.vue";
+import TransactionCategoryForm from "./TransactionCategoryForm.vue";
 import QuestForm from "./QuestForm.vue";
 import type { Note } from "@/stores/notes";
 
 interface TransactionFormData {
   id: string;
   transaction: Transaction;
+}
+
+interface TransactionCategoryFormData {
+  id: string;
+  category: TransactionCategory;
 }
 
 interface QuestFormData {
@@ -19,5 +25,5 @@ interface NoteFormData {
   note: Note;
 }
 
-export { TransactionForm, QuestForm };
-export type { TransactionFormData, QuestFormData, NoteFormData };
+export { TransactionForm, QuestForm, TransactionCategoryForm };
+export type { TransactionFormData, QuestFormData, NoteFormData, TransactionCategoryFormData };

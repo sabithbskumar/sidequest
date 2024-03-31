@@ -3,6 +3,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import NoteDetailsView from "@/views/NoteDetailsView.vue";
 import NotesView from "@/views/NotesView.vue";
 import QuestView from "@/views/QuestView.vue";
+import TransactionCategoriesView from "@/views/TransactionCategoriesView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -20,8 +21,18 @@ const router = createRouter({
     },
     {
       path: "/currency",
-      name: "currency",
-      component: CurrencyView,
+      children: [
+        {
+          path: "",
+          name: "currency",
+          component: CurrencyView,
+        },
+        {
+          path: "categories",
+          name: "currency-categories",
+          component: TransactionCategoriesView,
+        },
+      ],
     },
     {
       path: "/notes",

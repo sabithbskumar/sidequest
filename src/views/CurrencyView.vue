@@ -2,13 +2,15 @@
 import type { TransactionFormData } from "@/components/Forms";
 import { TransactionForm } from "@/components/Forms";
 import GlassModal from "@/components/GlassModal.vue";
-import { useCurrencyStore } from "@/stores/currency";
+import { useCurrencyStore, type Transaction } from "@/stores/currency";
 import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 import AddIcon from "~icons/material-symbols-light/add-rounded";
 import TransactionItem from "@/components/Currency/TransactionItem.vue";
 import TallyItem from "@/components/Currency/TallyItem.vue";
 import TheHeader from "@/components/TheHeader.vue";
+import TagIcon from "~icons/fluent-emoji-flat/label";
+import { RouterLink } from "vue-router";
 
 const currencyStore = useCurrencyStore();
 const { transactionIds, transactionRecords } = storeToRefs(currencyStore);
@@ -34,7 +36,7 @@ function closeModal() {
 
 const editedTransactionId = ref<null | string>(null);
 
-function getFormData() {
+function getFormData(): { id: string; transaction: Transaction } {
   if (editedTransactionId.value)
     return {
       id: editedTransactionId.value,
@@ -99,7 +101,13 @@ function tallyFinances() {
 
 <template>
   <div class="size-full flex flex-col relative bg-neutral-900">
-    <TheHeader heading="Currency" />
+    <TheHeader heading="Currency">
+      <template #default>
+        <RouterLink :to="{ name: 'currency-categories' }">
+          <TagIcon class="size-full p-5" />
+        </RouterLink>
+      </template>
+    </TheHeader>
 
     <div class="grow bg-neutral-800 overflow-y-auto pt-2 pb-20 pl-2 [scrollbar-gutter:stable]">
       <div class="w-full flex flex-col gap-2">
