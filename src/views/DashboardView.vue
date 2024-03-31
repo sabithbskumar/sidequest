@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import CurrencyIcon from "~icons/fluent-emoji-flat/coin";
 import CalendarIcon from "~icons/fluent-emoji-flat/calendar";
 import TheHeader from "@/components/TheHeader.vue";
+import { computed } from "vue";
 
 const currencyStore = useCurrencyStore();
 const { transactionIds, transactionRecords } = storeToRefs(currencyStore);
@@ -14,18 +15,28 @@ const storedTransactionData = localStorage.getItem("currencyStore");
 if (storedTransactionData) {
   loadTransactionData(JSON.parse(storedTransactionData));
 }
-function getBalance() {
-  return transactionIds.value.reduce((balance, transactionId) => {
-    const record = transactionRecords.value[transactionId];
-    switch (record.type) {
-      case "income":
-        return balance + parseFloat(record.amount);
-      case "expense":
-        return balance - parseFloat(record.amount);
-    }
-    return balance;
-  }, 0);
-}
+
+const financeTally = computed(() => {
+  return transactionIds.value.reduce(
+    (previous, transactionId) => {
+      const record = transactionRecords.value[transactionId];
+      const next = { ...previous };
+      switch (record.type) {
+        case "income":
+          next.income = previous.income + parseFloat(record.amount);
+          next.balance = previous.balance + parseFloat(record.amount);
+          break;
+        case "expense":
+          next.expense = previous.expense + parseFloat(record.amount);
+          next.balance = previous.balance - parseFloat(record.amount);
+          break;
+      }
+
+      return next;
+    },
+    { income: 0, expense: 0, balance: 0 },
+  );
+});
 
 const questStore = useQuestStore();
 const { questIds } = storeToRefs(questStore);
@@ -57,8 +68,12 @@ if (storedQuestData) {
             <CurrencyIcon class="size-8" />
             <span>Currency</span>
           </div>
-          <div class="p-3">
-            <span>Balance: {{ getBalance().toFixed(2) }}</span>
+          <div class="p-3 flex justify-between">
+            <span class="text-green-500">Income: {{ financeTally.income.toFixed(2) }}</span>
+            <span class="text-red-400">Expense: {{ financeTally.expense.toFixed(2) }}</span>
+            <span :class="financeTally.balance >= 0 ? 'text-green-500' : 'text-red-400'"
+              >Balance: {{ financeTally.balance.toFixed(2) }}</span
+            >
           </div>
         </RouterLink>
       </div>
