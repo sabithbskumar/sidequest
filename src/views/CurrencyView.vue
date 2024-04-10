@@ -4,7 +4,7 @@ import { TransactionForm } from "@/components/Forms";
 import GlassModal from "@/components/GlassModal.vue";
 import { useCurrencyStore, type Transaction } from "@/stores/currency";
 import { storeToRefs } from "pinia";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import AddIcon from "~icons/material-symbols-light/add-rounded";
 import TransactionItem from "@/components/Currency/TransactionItem.vue";
 import TallyItem from "@/components/Currency/TallyItem.vue";
@@ -81,21 +81,104 @@ function tallyFinances() {
     (previous, transactionId) => {
       const record = transactionRecords.value[transactionId];
       const next = { ...previous };
-      switch (record.type) {
-        case "income":
-          next.income = previous.income + parseFloat(record.amount);
-          next.balance = previous.balance + parseFloat(record.amount);
-          break;
-        case "expense":
-          next.expense = previous.expense + parseFloat(record.amount);
-          next.balance = previous.balance - parseFloat(record.amount);
-          break;
-      }
 
+      const amount = parseFloat(record.amount);
+
+      switch (record.type) {
+        case "income": {
+          if (transactionId >= filterStartTimestamp.value) next.income = previous.income + amount;
+          if (transactionId <= filterEndTimestamp.value) next.balance = previous.balance + amount;
+          break;
+        }
+        case "expense": {
+          if (transactionId >= filterStartTimestamp.value) next.expense = previous.expense + amount;
+          if (transactionId <= filterEndTimestamp.value) next.balance = previous.balance - amount;
+          break;
+        }
+      }
       return next;
     },
     { income: 0, expense: 0, balance: 0 },
   );
+}
+
+const radioOptions = [
+  {
+    label: "Day",
+    value: "day",
+  },
+  {
+    label: "Month",
+    value: "month",
+  },
+  {
+    label: "Year",
+    value: "year",
+  },
+];
+
+const defaultFilter = "month";
+const activeFilter = ref(defaultFilter);
+
+const filterStartTimestamp = computed(() => {
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  switch (activeFilter.value) {
+    case "day": {
+      return currentDate.getTime().toString();
+    }
+    case "month": {
+      currentDate.setDate(1);
+      return currentDate.getTime().toString();
+    }
+    case "year": {
+      currentDate.setMonth(0);
+      currentDate.setDate(1);
+      return currentDate.getTime().toString();
+    }
+    default: {
+      currentDate.setFullYear(0);
+      currentDate.setMonth(0);
+      currentDate.setDate(1);
+      return currentDate.getTime().toString();
+    }
+  }
+});
+
+const filterEndTimestamp = computed(() => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  currentDate.setHours(23, 59, 59, 999);
+
+  switch (activeFilter.value) {
+    case "day": {
+      return currentDate.getTime().toString();
+    }
+    case "month": {
+      currentDate.setMonth(currentMonth + 1);
+      currentDate.setDate(0);
+      return currentDate.getTime().toString();
+    }
+    case "year": {
+      currentDate.setFullYear(currentYear + 1);
+      currentDate.setMonth(0);
+      currentDate.setDate(0);
+      return currentDate.getTime().toString();
+    }
+    default: {
+      currentDate.setFullYear(currentYear + 1);
+      currentDate.setMonth(0);
+      currentDate.setDate(0);
+      return currentDate.getTime().toString();
+    }
+  }
+});
+
+function getTransactionIds() {
+  return transactionIds.value.filter((id) => id >= filterStartTimestamp.value);
 }
 </script>
 
@@ -110,10 +193,37 @@ function tallyFinances() {
     </TheHeader>
 
     <div class="grow bg-neutral-800 overflow-y-auto pt-2 pb-20 pl-2 [scrollbar-gutter:stable]">
+      <div class="max-w-5xl mx-auto">
+        <div class="w-full pb-2">
+          <div
+            class="inline-flex p-2 w-full md:min-w-80 md:w-auto bg-neutral-600/20 h-14 rounded-md gap-2"
+          >
+            <div
+              v-for="{ label, value } in radioOptions"
+              :key="value"
+              class="mx-auto flex basis-0 justify-evenly gap-2 has-[:checked]:bg-neutral-700 hover:bg-neutral-700 rounded grow flex-wrap"
+            >
+              <input
+                :id="value"
+                v-model="activeFilter"
+                :value="value"
+                class="peer/radio hidden"
+                type="radio"
+                name="activeFilter"
+              />
+              <label
+                :for="value"
+                class="peer-checked/radio:text-green-400 font-bold w-full leading-10 text-center cursor-pointer select-none"
+                v-text="label"
+              ></label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="w-full flex flex-col gap-2">
         <TransitionGroup name="list">
           <TransactionItem
-            v-for="transactionId in transactionIds"
+            v-for="transactionId in getTransactionIds()"
             :key="transactionId"
             :transaction-id="transactionId"
             :amount="transactionRecords[transactionId].amount"
@@ -161,17 +271,12 @@ function tallyFinances() {
 .list-move,
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.4s ease;
   user-select: none;
 }
 
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
-}
-.list-leave-active {
-  position: absolute;
-  right: 0;
-  width: 100%;
 }
 </style>
