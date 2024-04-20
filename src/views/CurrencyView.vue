@@ -11,6 +11,8 @@ import TallyItem from "@/components/Currency/TallyItem.vue";
 import TheHeader from "@/components/TheHeader.vue";
 import TagIcon from "~icons/fluent-emoji-flat/label";
 import { RouterLink } from "vue-router";
+import IconLeft from "~icons/material-symbols-light/arrow-left-rounded";
+import IconRight from "~icons/material-symbols-light/arrow-right-rounded";
 
 const currencyStore = useCurrencyStore();
 const { transactionIds, transactionRecords, categoryRecords } = storeToRefs(currencyStore);
@@ -86,13 +88,23 @@ function tallyFinances() {
 
       switch (record.type) {
         case "income": {
-          if (transactionId >= filterStartTimestamp.value) next.income = previous.income + amount;
-          if (transactionId <= filterEndTimestamp.value) next.balance = previous.balance + amount;
+          if (
+            +transactionId >= relativeTimestamp.value.start &&
+            +transactionId <= relativeTimestamp.value.end
+          )
+            next.income = previous.income + amount;
+          if (+transactionId <= relativeTimestamp.value.end)
+            next.balance = previous.balance + amount;
           break;
         }
         case "expense": {
-          if (transactionId >= filterStartTimestamp.value) next.expense = previous.expense + amount;
-          if (transactionId <= filterEndTimestamp.value) next.balance = previous.balance - amount;
+          if (
+            +transactionId >= relativeTimestamp.value.start &&
+            +transactionId <= relativeTimestamp.value.end
+          )
+            next.expense = previous.expense + amount;
+          if (+transactionId <= relativeTimestamp.value.end)
+            next.balance = previous.balance - amount;
           break;
         }
       }
@@ -119,66 +131,128 @@ const radioOptions = [
 
 const defaultFilter = "month";
 const activeFilter = ref(defaultFilter);
+const timestampOffset = ref(0);
 
-const filterStartTimestamp = computed(() => {
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
+watch(activeFilter, () => (timestampOffset.value = 0));
+
+const relativeTimestamp = computed(() => {
+  const today = new Date();
+
+  const month = { start: 0, end: 11 };
+  const hour = { start: 0, end: 23 };
+  const minute = { start: 0, end: 59 };
+  const second = { start: 0, end: 59 };
+  const millisecond = { start: 0, end: 999 };
 
   switch (activeFilter.value) {
     case "day": {
-      return currentDate.getTime().toString();
+      const startTimestamp = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + timestampOffset.value,
+        hour.start,
+        minute.start,
+        second.start,
+        millisecond.start,
+      ).getTime();
+      const endTimestamp = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + timestampOffset.value,
+        hour.end,
+        minute.end,
+        second.end,
+        millisecond.end,
+      ).getTime();
+      return { start: startTimestamp, end: endTimestamp };
     }
     case "month": {
-      currentDate.setDate(1);
-      return currentDate.getTime().toString();
+      const startTimestamp = new Date(
+        today.getFullYear(),
+        today.getMonth() + timestampOffset.value,
+        1, // First Day
+        hour.start,
+        minute.start,
+        second.start,
+        millisecond.start,
+      ).getTime();
+      const endTimestamp = new Date(
+        today.getFullYear(),
+        today.getMonth() + 1 + timestampOffset.value,
+        0, // Last Day of the previous month
+        hour.end,
+        minute.end,
+        second.end,
+        millisecond.end,
+      ).getTime();
+      return { start: startTimestamp, end: endTimestamp };
     }
     case "year": {
-      currentDate.setMonth(0);
-      currentDate.setDate(1);
-      return currentDate.getTime().toString();
+      const startTimestamp = new Date(
+        today.getFullYear() + timestampOffset.value,
+        month.start,
+        1, // First Day
+        hour.start,
+        minute.start,
+        second.start,
+        millisecond.start,
+      ).getTime();
+      const endTimestamp = new Date(
+        today.getFullYear() + timestampOffset.value,
+        month.end,
+        31, // Last Day of December
+        hour.end,
+        minute.end,
+        second.end,
+        millisecond.end,
+      ).getTime();
+      return { start: startTimestamp, end: endTimestamp };
     }
     default: {
-      currentDate.setFullYear(0);
-      currentDate.setMonth(0);
-      currentDate.setDate(1);
-      return currentDate.getTime().toString();
+      const startTimestamp = new Date(-8640000000000000).getTime();
+      const endTimestamp = new Date(8640000000000000).getTime();
+      return { start: startTimestamp, end: endTimestamp };
     }
   }
 });
 
-const filterEndTimestamp = computed(() => {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
-  currentDate.setHours(23, 59, 59, 999);
-
+const filterRange = computed(() => {
+  const today = new Date(relativeTimestamp.value.start);
   switch (activeFilter.value) {
     case "day": {
-      return currentDate.getTime().toString();
+      return `${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`;
     }
     case "month": {
-      currentDate.setMonth(currentMonth + 1);
-      currentDate.setDate(0);
-      return currentDate.getTime().toString();
+      return `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
     }
     case "year": {
-      currentDate.setFullYear(currentYear + 1);
-      currentDate.setMonth(0);
-      currentDate.setDate(0);
-      return currentDate.getTime().toString();
+      return `${today.getFullYear()}`;
     }
     default: {
-      currentDate.setFullYear(currentYear + 1);
-      currentDate.setMonth(0);
-      currentDate.setDate(0);
-      return currentDate.getTime().toString();
+      return "All";
     }
   }
 });
 
 function getTransactionIds() {
-  return transactionIds.value.filter((id) => id >= filterStartTimestamp.value);
+  return transactionIds.value.filter(
+    (id) => +id >= relativeTimestamp.value.start && +id <= relativeTimestamp.value.end,
+  );
 }
 </script>
 
@@ -194,7 +268,7 @@ function getTransactionIds() {
 
     <div class="grow bg-neutral-800 overflow-y-auto pt-2 pb-20 pl-2 [scrollbar-gutter:stable]">
       <div class="max-w-5xl mx-auto">
-        <div class="w-full pb-2">
+        <div class="w-full pb-2 inline-flex flex-wrap gap-2">
           <div
             class="inline-flex p-2 w-full md:min-w-80 md:w-auto bg-neutral-600/20 h-14 rounded-md gap-2"
           >
@@ -218,13 +292,33 @@ function getTransactionIds() {
               ></label>
             </div>
           </div>
+          <div
+            class="inline-flex p-2 grow w-full justify-between items-center md:min-w-80 md:w-auto bg-neutral-600/20 h-14 rounded-md gap-2"
+          >
+            <button
+              class="size-10 bg-neutral-500 bg-opacity-10 hover:bg-opacity-30 rounded"
+              @click="timestampOffset -= 1"
+            >
+              <IconLeft class="text-2xl size-full" />
+            </button>
+            <div class="flex flex-col">
+              <span v-text="filterRange"></span>
+            </div>
+            <button
+              class="size-10 bg-neutral-500 bg-opacity-10 hover:bg-opacity-30 rounded"
+              @click="timestampOffset += 1"
+            >
+              <IconRight class="tex-2xl size-full" />
+            </button>
+          </div>
         </div>
       </div>
-      <div class="w-full flex flex-col gap-2">
+      <div class="w-full flex flex-col">
         <TransitionGroup name="list">
           <TransactionItem
             v-for="transactionId in getTransactionIds()"
             :key="transactionId"
+            class="my-1"
             :transaction-id="transactionId"
             :amount="transactionRecords[transactionId].amount"
             :type="transactionRecords[transactionId].type"
@@ -278,5 +372,7 @@ function getTransactionIds() {
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
+  height: 0;
+  margin-block: 0;
 }
 </style>
