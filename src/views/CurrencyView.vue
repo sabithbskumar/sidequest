@@ -268,7 +268,7 @@ function getTransactionIds() {
 
     <div class="grow bg-neutral-800 overflow-y-auto pt-2 pb-20 pl-2 [scrollbar-gutter:stable]">
       <div class="max-w-5xl mx-auto">
-        <div class="w-full pb-2 inline-flex flex-wrap gap-2">
+        <div class="w-full inline-flex flex-wrap gap-2">
           <div
             class="inline-flex p-2 w-full md:min-w-80 md:w-auto bg-neutral-600/20 h-14 rounded-md gap-2"
           >
@@ -318,7 +318,7 @@ function getTransactionIds() {
           <TransactionItem
             v-for="transactionId in getTransactionIds()"
             :key="transactionId"
-            class="my-1"
+            class="my-1 first:mt-2 last:mb-0"
             :transaction-id="transactionId"
             :amount="transactionRecords[transactionId].amount"
             :type="transactionRecords[transactionId].type"
