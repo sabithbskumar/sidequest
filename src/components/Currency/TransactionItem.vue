@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import EditIcon from "~icons/material-symbols-light/edit-rounded";
 import DeleteIcon from "~icons/material-symbols-light/delete-rounded";
+import type { TransactionCategory } from "@/stores/currency";
 
 defineProps<{
   transactionId: string;
   amount: string;
   type: string;
   note: string;
-  category: string;
+  category: TransactionCategory;
   showActions: boolean;
 }>();
 
@@ -35,10 +36,12 @@ const transactionStyle = (type: string) => {
       class="grow h-full inline-flex items-center gap-2 overflow-hidden rounded bg-neutral-600 bg-opacity-20 hover:bg-opacity-80 shadow-sm px-2"
       @click.self="$emit('click', transactionId)"
     >
-      <span class="px-3 truncate pointer-events-none text-neutral-200 font-medium">{{
-        category
-      }}</span>
-      <span class="px-3 truncate pointer-events-none text-neutral-200 font-medium">{{ note }}</span>
+      <span
+        class="size-10 shrink-0 truncate inline-flex items-center justify-center rounded-sm pointer-events-none text-neutral-100 font-bold shadow"
+        :class="type === 'income' ? 'bg-green-500/20' : 'bg-red-500/20'"
+        v-text="category.symbol || category.name[0]"
+      ></span>
+      <span class="truncate pointer-events-none text-neutral-200 font-medium">{{ note }}</span>
       <span
         class="px-2 font-semibold shrink-0 font-mono before:px-1 pointer-events-none ml-auto"
         :class="transactionStyle(type)"

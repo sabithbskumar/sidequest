@@ -60,6 +60,16 @@ const vFocus = {
           name="name"
           required
         />
+        <input
+          v-model="formValues.category.symbol"
+          v-focus
+          type="text"
+          class="w-full min-w-0 p-4 text-neutral-600 outline-none rounded"
+          placeholder="Symbol"
+          maxlength="20"
+          name="symbol"
+          required
+        />
       </div>
     </div>
     <div class="flex gap-4">

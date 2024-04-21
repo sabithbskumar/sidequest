@@ -323,7 +323,7 @@ function getTransactionIds() {
             :amount="transactionRecords[transactionId].amount"
             :type="transactionRecords[transactionId].type"
             :note="transactionRecords[transactionId].note"
-            :category="categoryRecords[transactionRecords[transactionId].categoryId].name"
+            :category="categoryRecords[transactionRecords[transactionId].categoryId]"
             :active-transaction-id="activeTransactionId"
             :show-actions="activeTransactionId === transactionId"
             @edit="handleEdit"

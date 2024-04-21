@@ -98,6 +98,7 @@ interface CurrencyStore {
 
 interface TransactionCategory {
   name: string;
+  symbol: string;
   type: TransactionType;
 }
 

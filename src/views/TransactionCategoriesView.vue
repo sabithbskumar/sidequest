@@ -55,7 +55,7 @@ function getFormData(): { id: string; category: TransactionCategory } {
         ...categoryRecords.value[editedCategoryId.value],
       },
     };
-  else return { id: "", category: { name: "", type: "expense" } };
+  else return { id: "", category: { name: "", symbol: "", type: "expense" } };
 }
 function getFormOptions() {
   if (editedCategoryId.value) return { heading: "Edit Category", primaryLabel: "Edit" };
@@ -108,10 +108,18 @@ const handleDelete = (id: string) => {
                 class="grow h-full inline-flex items-center overflow-hidden rounded bg-neutral-600 bg-opacity-20 hover:bg-opacity-80 shadow-sm group/category focus-within:ring-0 focus-within:outline-none focus-within:bg-opacity-80"
                 tabindex="0"
               >
-                <span
-                  class="truncate pointer-events-none px-3 text-neutral-100 font-medium"
-                  v-text="categoryRecords[categoryId].name"
-                ></span>
+                <div class="inline-flex h-full items-center w-full p-2">
+                  <span
+                    class="size-10 shrink-0 truncate inline-flex items-center justify-center rounded-sm pointer-events-none text-neutral-100 font-bold shadow bg-green-500/20"
+                    v-text="
+                      categoryRecords[categoryId].symbol || categoryRecords[categoryId].name[0]
+                    "
+                  ></span>
+                  <span
+                    class="truncate pointer-events-none px-3 text-neutral-100 font-medium"
+                    v-text="categoryRecords[categoryId].name"
+                  ></span>
+                </div>
                 <div
                   class="ml-auto h-full hidden group-hover/category:inline-flex group-focus-within/category:inline-flex"
                 >
@@ -145,10 +153,18 @@ const handleDelete = (id: string) => {
                 class="grow h-full inline-flex items-center overflow-hidden rounded bg-neutral-600 bg-opacity-20 hover:bg-opacity-80 shadow-sm group/category focus-within:ring-0 focus-within:outline-none focus-within:bg-opacity-80"
                 tabindex="0"
               >
-                <span
-                  class="truncate pointer-events-none px-3 text-neutral-100 font-medium"
-                  v-text="categoryRecords[categoryId].name"
-                ></span>
+                <div class="inline-flex h-full items-center w-full p-2">
+                  <span
+                    class="size-10 shrink-0 truncate inline-flex items-center justify-center rounded-sm pointer-events-none text-neutral-100 font-bold shadow bg-red-500/20"
+                    v-text="
+                      categoryRecords[categoryId].symbol || categoryRecords[categoryId].name[0]
+                    "
+                  ></span>
+                  <span
+                    class="truncate pointer-events-none px-3 text-neutral-100 font-medium"
+                    v-text="categoryRecords[categoryId].name"
+                  ></span>
+                </div>
                 <div
                   class="ml-auto h-full hidden group-hover/category:inline-flex group-focus-within/category:inline-flex"
                 >
