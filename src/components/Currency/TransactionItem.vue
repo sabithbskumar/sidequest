@@ -43,7 +43,7 @@ const transactionStyle = (type: string) => {
         class="px-2 font-semibold shrink-0 font-mono before:px-1 pointer-events-none ml-auto"
         :class="transactionStyle(type)"
       >
-        {{ parseInt(amount).toFixed(2) }}
+        {{ parseFloat(amount).toFixed(2) }}
       </span>
     </div>
     <div v-if="showActions" class="ml-auto h-full inline-flex rounded bg-neutral-600 bg-opacity-20">
