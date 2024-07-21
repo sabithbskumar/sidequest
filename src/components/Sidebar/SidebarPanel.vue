@@ -30,13 +30,13 @@ const { isExpanded } = inject(sidebarInjectionKey) as SidebarInjectI;
       </Transition>
     </div>
     <div
-      class="grow p-2 md:p-3 md:border-t border-neutral-700/50 flex md:flex-col gap-2 justify-center pr-16"
+      class="grow p-2 md:p-3 md:border-t border-neutral-700/50 flex md:flex-col gap-2 justify-center"
     >
       <RouterLink
         v-for="link in links"
         :key="link.name"
         :to="{ name: link.name }"
-        class="h-10 flex items-center shrink-0 rounded-lg hover:bg-neutral-600"
+        class="h-10 flex items-center shrink-0 rounded-lg hover:bg-neutral-600 max-md:first-of-type:ml-auto max-md:last-of-type:ml-auto"
         active-class="bg-neutral-600"
       >
         <component :is="link.icon" class="size-10 p-2 shrink-0" />

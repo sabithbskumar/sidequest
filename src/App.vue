@@ -4,6 +4,7 @@ import { SidebarPanel } from "@/components/Sidebar";
 import CurrencyIcon from "~icons/fluent-emoji-flat/coin";
 import CalendarIcon from "~icons/fluent-emoji-flat/calendar";
 import NoteIcon from "~icons/fluent-emoji-flat/notebook";
+import GearIcon from "~icons/fluent-emoji-flat/gear";
 
 const links = [
   {
@@ -20,6 +21,11 @@ const links = [
     label: "Notes",
     name: "notes",
     icon: NoteIcon,
+  },
+  {
+    label: "Settings",
+    name: "settings",
+    icon: GearIcon,
   },
 ];
 </script>

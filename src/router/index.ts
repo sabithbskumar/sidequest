@@ -3,6 +3,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import NoteDetailsView from "@/views/NoteDetailsView.vue";
 import NotesView from "@/views/NotesView.vue";
 import QuestView from "@/views/QuestView.vue";
+import SettingsView from "@/views/SettingsView.vue";
 import TransactionCategoriesView from "@/views/TransactionCategoriesView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -48,6 +49,11 @@ const router = createRouter({
           component: NoteDetailsView,
         },
       ],
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: SettingsView,
     },
   ],
 });
