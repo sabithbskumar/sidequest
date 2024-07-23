@@ -245,7 +245,7 @@ function getTransactionIds() {
 
     <div class="size-full bg-neutral-800 overflow-hidden">
       <div
-        class="size-full mx-auto max-w-screen-2xl p-2 max-xl:pr-0 flex max-xl:flex-col gap-2 overflow-y-auto"
+        class="size-full mx-auto max-w-screen-2xl p-2 flex max-xl:flex-col gap-2 overflow-y-auto"
       >
         <div class="max-xl:w-full xl:w-4/12 shrink-0 grid gap-2 grid-rows-2">
           <div class="rounded">
@@ -277,7 +277,7 @@ function getTransactionIds() {
             </div>
           </div>
         </div>
-        <div class="grow h-full shrink-0 flex flex-col gap-2">
+        <div class="grow shrink-0 flex flex-col gap-2">
           <div class="w-full grid md:grid-cols-12 gap-2">
             <div class="md:col-span-5 inline-flex p-2 bg-neutral-600/20 h-14 rounded-md gap-2">
               <div
@@ -322,24 +322,22 @@ function getTransactionIds() {
           </div>
           <div class="grow size-full grid grid-cols-12 grid-rows-12 gap-2">
             <span
-              class="col-span-4 row-span-1 md:row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold text-green-500"
+              class="col-span-4 row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold text-green-500 text-center"
             >
               Income: {{ financeTally.income.toFixed(2) }}
             </span>
             <span
-              class="col-span-4 row-span-1 md:row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold text-red-400"
+              class="col-span-4 row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold text-red-400 text-center"
             >
               Expense: {{ financeTally.expense.toFixed(2) }}
             </span>
             <span
-              class="col-span-4 row-span-1 md:row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold"
+              class="col-span-4 row-span-2 rounded bg-neutral-700/30 inline-flex justify-center items-center font-bold text-center"
               :class="financeTally.balance >= 0 ? 'text-green-500' : 'text-red-400'"
             >
               Balance: {{ financeTally.balance.toFixed(2) }}
             </span>
-            <div
-              class="col-span-full row-span-11 md:row-span-10 bg-neutral-700/30 rounded grid items-center"
-            >
+            <div class="col-span-full row-span-10 bg-neutral-700/30 rounded grid items-center">
               <ExpensePieChart :data="expenseTally" />
             </div>
           </div>

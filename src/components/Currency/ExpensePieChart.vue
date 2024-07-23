@@ -70,7 +70,7 @@ const option = computed<EChartsOption>(() => {
 </script>
 
 <template>
-  <div class="py-5">
-    <VChart class="h-[500px]" :option="option" :autoresize="true" />
+  <div class="py-5 h-full">
+    <VChart :option="option" :autoresize="true" />
   </div>
 </template>
